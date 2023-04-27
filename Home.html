@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./Home.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./About.html">About</a></li>
+          <li><a href="#Home">Home</a></li>
+          <li><a href="./Home.html">Divinarion</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="button_loin" id="btn">
+      <img src="./image/magic-ball_1.png" alt="" width="100%" />
+      <div class="text"></div>
+    </div>
+  </body>
+  <script>
+    let sheets = []
+
+    fetch('./sheet.csv')
+      .then(res => res.text())
+      .then(res => {
+        sheets = res.split('\n')
+      })
+
+    function random(m, n) {
+      return m + parseInt(Math.random() * (n - m + 1))
+    }
+    function color() {
+      var result = '#'
+      for (var i = 0; i < 6; i++) {
+        result += random(0, 15).toString(16)
+      }
+      return result
+    }
+    var imgEl = document.querySelector('#btn img')
+    let timer = null
+
+    const textEl = document.querySelector('.text')
+    imgEl.onmousedown = function (e) {
+      if (e.button === 0) {
+        imgEl.classList.add('ani')
+        textEl.innerText = ''
+        timer = setTimeout(() => {
+          const index = random(0, sheets.length - 1)
+          textEl.innerText = sheets[index]
+          imgEl.classList.remove('ani')
+        }, 3000)
+      }
+    }
+
+    imgEl.onmouseup = function (e) {
+      if (e.button === 0) {
+        clearTimeout(timer)
+        imgEl.classList.remove('ani')
+      }
+    }
+  </script>
+</html>
